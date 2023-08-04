@@ -24,7 +24,7 @@ jobs:
       - name: Copy wasm_exec.js
         run: cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" site/
       - name: Publish
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@4.4.3
         with:
           branch: gh-pages
           folder: site
