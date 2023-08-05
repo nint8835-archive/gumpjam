@@ -9,21 +9,24 @@ import (
 
 type Player struct {
 	*components.Camera
-	*components.Position
+	*components.Velocity
 }
 
 func (p *Player) Update(w engine.World) {
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		p.Y -= 5
+		p.Y = -5
+	} else if ebiten.IsKeyPressed(ebiten.KeyS) {
+		p.Y = 5
+	} else {
+		p.Y = 0
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		p.Y += 5
-	}
+
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
-		p.X -= 5
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyD) {
-		p.X += 5
+		p.X = -5
+	} else if ebiten.IsKeyPressed(ebiten.KeyD) {
+		p.X = 5
+	} else {
+		p.X = 0
 	}
 }
 

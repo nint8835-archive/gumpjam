@@ -16,6 +16,7 @@ func (g *Game) Setup(w engine.World) {
 		components.Sprite{},
 		components.Position{},
 		components.Camera{},
+		components.Velocity{},
 	)
 
 	w.AddSystems(
@@ -23,13 +24,13 @@ func (g *Game) Setup(w engine.World) {
 		&systems.Debug{},
 		&systems.Player{},
 		&systems.ScreenEdgeTransition{},
+		&systems.Velocity{},
 	)
 
 	w.AddEntities(
 		&entities.Player{
 			Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "RAT", colornames.Red),
 			Position: components.NewGridPosition(10, 10, 0, 0),
-			Camera:   components.Camera{},
 		},
 	)
 }

@@ -6,4 +6,5 @@ type Player struct {
 	components.Sprite
 	components.Position
 	components.Camera
+	components.Velocity
 }
