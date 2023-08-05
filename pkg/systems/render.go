@@ -43,11 +43,9 @@ func (r *Render) Draw(w engine.World, screen *ebiten.Image) {
 		return visibleSprites[i].Sprite.Layer < visibleSprites[j].Sprite.Layer
 	})
 
-	screenWidth, screenHeight := float64(screen.Bounds().Dx()), float64(screen.Bounds().Dy())
-
 	for _, sprite := range visibleSprites {
 		options := &ebiten.DrawImageOptions{}
-		options.GeoM.Translate(sprite.Position.X*screenWidth, sprite.Position.Y*screenHeight)
+		options.GeoM.Translate(sprite.Position.X, sprite.Position.Y)
 		screen.DrawImage(sprite.Sprite.Image, options)
 	}
 }

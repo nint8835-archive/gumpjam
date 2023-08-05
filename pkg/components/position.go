@@ -8,13 +8,13 @@ type Position struct {
 	CellY int
 }
 
-const GridWidth = 20
-const GridHeight = 15
+const GridCellWidth = 32
+const GridCellHeight = 32
 
 func NewGridPosition(x, y int, cellX, cellY int) Position {
 	return Position{
-		X:     float64(x) / GridWidth,
-		Y:     float64(y) / GridHeight,
+		X:     float64(x) * GridCellWidth,
+		Y:     float64(y) * GridCellHeight,
 		CellX: cellX,
 		CellY: cellY,
 	}

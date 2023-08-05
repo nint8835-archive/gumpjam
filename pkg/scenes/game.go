@@ -1,8 +1,6 @@
 package scenes
 
 import (
-	"image/color"
-
 	"github.com/sedyh/mizu/pkg/engine"
 	"golang.org/x/image/colornames"
 
@@ -10,14 +8,6 @@ import (
 	"github.com/nint8835/gumpjam/pkg/entities"
 	"github.com/nint8835/gumpjam/pkg/systems"
 )
-
-var placeholderColors = []color.Color{
-	colornames.Lavenderblush,
-	colornames.Lightseagreen,
-	colornames.Palevioletred,
-	colornames.Powderblue,
-	colornames.Chocolate,
-}
 
 type Game struct{}
 

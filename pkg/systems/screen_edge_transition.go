@@ -11,21 +11,23 @@ type ScreenEdgeTransition struct {
 }
 
 func (s *ScreenEdgeTransition) Update(w engine.World) {
+	screenWidth, screenHeight := float64(w.Bounds().Dx()), float64(w.Bounds().Dy())
+
 	if s.X < 0 {
 		s.CellX--
-		s.X = 1 + s.X
+		s.X = screenWidth + s.X
 	}
-	if s.X > 1 {
+	if s.X > screenWidth {
 		s.CellX++
-		s.X = s.X - 1
+		s.X = s.X - screenWidth
 	}
 	if s.Y < 0 {
 		s.CellY--
-		s.Y = 1 + s.Y
+		s.Y = screenHeight + s.Y
 	}
-	if s.Y > 1 {
+	if s.Y > screenHeight {
 		s.CellY++
-		s.Y = s.Y - 1
+		s.Y = s.Y - screenHeight
 	}
 }
 
