@@ -31,6 +31,8 @@ func (g *Game) Setup(w engine.World) {
 	w.AddSystems(
 		&systems.Render{},
 		&systems.Debug{},
+		&systems.Player{},
+		&systems.ScreenEdgeTransition{},
 	)
 
 	var placeholders []any
