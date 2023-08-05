@@ -6,12 +6,19 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
+type SpriteLayer int
+
+const (
+	SpriteLayerBackground SpriteLayer = iota
+	SpriteLayerForeground
+)
+
 type Sprite struct {
 	Image *ebiten.Image
-	Layer int
+	Layer SpriteLayer
 }
 
-func NewPlaceholderSprite(width, height, layer int, color color.Color) Sprite {
+func NewPlaceholderSprite(width, height int, layer SpriteLayer, color color.Color) Sprite {
 	image := ebiten.NewImage(width, height)
 	image.Fill(color)
 

@@ -43,7 +43,7 @@ func (g *Game) Setup(w engine.World) {
 					}
 
 					placeholders = append(placeholders, &entities.Placeholder{
-						Sprite:   components.NewPlaceholderSprite(32, 32, 0, placeholderColors[(x+y)%len(placeholderColors)]),
+						Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerBackground, placeholderColors[(x+y)%len(placeholderColors)]),
 						Position: components.NewGridPosition(x, y, cellX, cellY),
 					})
 				}
@@ -53,7 +53,7 @@ func (g *Game) Setup(w engine.World) {
 
 	w.AddEntities(
 		&entities.Player{
-			Sprite:   components.NewPlaceholderSprite(32, 32, 1, colornames.Purple),
+			Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, colornames.Purple),
 			Position: components.NewGridPosition(10, 10, 0, 0),
 			Camera:   components.Camera{},
 		},
