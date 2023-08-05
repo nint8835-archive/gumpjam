@@ -25,31 +25,40 @@ func (g *Game) Setup(w engine.World) {
 	w.AddComponents(
 		components.Sprite{},
 		components.Position{},
+		components.Camera{},
 	)
 
 	w.AddSystems(
 		&systems.Render{},
+		&systems.Debug{},
 	)
 
 	var placeholders []any
+	for cellX := 0; cellX < 10; cellX++ {
+		for cellY := 0; cellY < 10; cellY++ {
+			for x := 0; x < components.GridWidth; x++ {
+				for y := 0; y < components.GridHeight; y++ {
+					if (x+y)%(cellX+cellY+1) != 0 {
+						continue
+					}
 
-	for x := 0; x < 20; x++ {
-		for y := 0; y < 15; y++ {
-			placeholderColor := placeholderColors[(x+y)%len(placeholderColors)]
-
-			placeholders = append(placeholders, &entities.Placeholder{
-				Sprite: *components.NewPlaceholderSprite(32, 32, placeholderColor),
-				Position: components.Position{
-					X: float64(x) / 20,
-					Y: float64(y) / 15,
-				},
-			})
+					placeholders = append(placeholders, &entities.Placeholder{
+						Sprite:   components.NewPlaceholderSprite(32, 32, 0, placeholderColors[(x+y)%len(placeholderColors)]),
+						Position: components.NewGridPosition(x, y, cellX, cellY),
+					})
+				}
+			}
 		}
 	}
 
 	w.AddEntities(
-		placeholders...,
+		&entities.Player{
+			Sprite:   components.NewPlaceholderSprite(32, 32, 1, colornames.Purple),
+			Position: components.NewGridPosition(10, 10, 0, 0),
+			Camera:   components.Camera{},
+		},
 	)
+	w.AddEntities(placeholders...)
 }
 
 var _ engine.Scene = (*Game)(nil)

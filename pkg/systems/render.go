@@ -1,6 +1,8 @@
 package systems
 
 import (
+	"sort"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/sedyh/mizu/pkg/engine"
 
@@ -8,16 +10,46 @@ import (
 )
 
 type Render struct {
-	*components.Sprite
+	*components.Camera
 	*components.Position
 }
 
-func (r *Render) Draw(_ engine.World, screen *ebiten.Image) {
-	screenWidth, screenHeight := float64(screen.Bounds().Dx()), float64(screen.Bounds().Dy())
-	options := &ebiten.DrawImageOptions{}
-	options.GeoM.Translate(r.Position.X*screenWidth, r.Position.Y*screenHeight)
+type spriteData struct {
+	*components.Position
+	*components.Sprite
+}
 
-	screen.DrawImage(r.Sprite.Image, options)
+func (r *Render) Draw(w engine.World, screen *ebiten.Image) {
+	view := w.View(components.Position{}, components.Sprite{})
+
+	var visibleSprites []spriteData
+
+	view.Each(func(entity engine.Entity) {
+		var position *components.Position
+		var sprite *components.Sprite
+		entity.Get(&position, &sprite)
+
+		if position.CellX != r.CellX || position.CellY != r.CellY {
+			return
+		}
+
+		visibleSprites = append(visibleSprites, spriteData{
+			Position: position,
+			Sprite:   sprite,
+		})
+	})
+
+	sort.Slice(visibleSprites, func(i, j int) bool {
+		return visibleSprites[i].Sprite.Layer < visibleSprites[j].Sprite.Layer
+	})
+
+	screenWidth, screenHeight := float64(screen.Bounds().Dx()), float64(screen.Bounds().Dy())
+
+	for _, sprite := range visibleSprites {
+		options := &ebiten.DrawImageOptions{}
+		options.GeoM.Translate(sprite.Position.X*screenWidth, sprite.Position.Y*screenHeight)
+		screen.DrawImage(sprite.Sprite.Image, options)
+	}
 }
 
 var _ engine.SystemDrawer = (*Render)(nil)

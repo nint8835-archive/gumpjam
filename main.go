@@ -11,7 +11,7 @@ import (
 
 func main() {
 	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("Gumpjam")
 
 	instance := engine.NewGame(&scenes.Game{})
 

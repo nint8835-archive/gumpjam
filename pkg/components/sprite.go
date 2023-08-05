@@ -8,14 +8,15 @@ import (
 
 type Sprite struct {
 	Image *ebiten.Image
+	Layer int
 }
 
-func NewPlaceholderSprite(width, height int, color color.Color) *Sprite {
+func NewPlaceholderSprite(width, height, layer int, color color.Color) Sprite {
 	image := ebiten.NewImage(width, height)
-
 	image.Fill(color)
 
-	return &Sprite{
+	return Sprite{
 		Image: image,
+		Layer: layer,
 	}
 }
