@@ -21,3 +21,6 @@
 go.work
 
 .idea/
+
+site/gumpjam.wasm
+site/wasm_exec.js
