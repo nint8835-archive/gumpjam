@@ -35,32 +35,13 @@ func (g *Game) Setup(w engine.World) {
 		&systems.ScreenEdgeTransition{},
 	)
 
-	var placeholders []any
-	for cellX := 0; cellX < 10; cellX++ {
-		for cellY := 0; cellY < 10; cellY++ {
-			for x := 0; x < components.GridWidth; x++ {
-				for y := 0; y < components.GridHeight; y++ {
-					if (x+y)%(cellX+cellY+1) != 0 {
-						continue
-					}
-
-					placeholders = append(placeholders, &entities.Placeholder{
-						Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerBackground, placeholderColors[(x+y)%len(placeholderColors)]),
-						Position: components.NewGridPosition(x, y, cellX, cellY),
-					})
-				}
-			}
-		}
-	}
-
 	w.AddEntities(
 		&entities.Player{
-			Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, colornames.Purple),
+			Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "RAT", colornames.Red),
 			Position: components.NewGridPosition(10, 10, 0, 0),
 			Camera:   components.Camera{},
 		},
 	)
-	w.AddEntities(placeholders...)
 }
 
 var _ engine.Scene = (*Game)(nil)
