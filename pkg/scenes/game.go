@@ -1,6 +1,8 @@
 package scenes
 
 import (
+	"image/color"
+
 	"github.com/sedyh/mizu/pkg/engine"
 	"golang.org/x/image/colornames"
 
@@ -8,6 +10,18 @@ import (
 	"github.com/nint8835/gumpjam/pkg/entities"
 	"github.com/nint8835/gumpjam/pkg/systems"
 )
+
+var cellWallColours = []color.Color{
+	colornames.Grey,
+	colornames.Darkseagreen,
+	colornames.Darkslateblue,
+	colornames.Darkslategray,
+	colornames.Darkturquoise,
+	colornames.Darkviolet,
+	colornames.Deeppink,
+	colornames.Deepskyblue,
+	colornames.Chartreuse,
+}
 
 type Game struct{}
 
@@ -30,9 +44,14 @@ func (g *Game) Setup(w engine.World) {
 
 	w.AddEntities(
 		&entities.Player{
-			Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "RAT", colornames.Red),
-			Position: components.NewGridPosition(10, 10, 0, 0),
-			Hitbox:   components.Hitbox{Width: 32, Height: 32},
+			Sprite: components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "RAT", colornames.Red),
+			Position: components.Position{
+				X:     640.0/2.0 - 16.0,
+				Y:     480.0/2.0 - 16.0,
+				CellX: 2,
+				CellY: 2,
+			},
+			Hitbox: components.Hitbox{Width: 32, Height: 32},
 		},
 	)
 
@@ -49,12 +68,12 @@ func (g *Game) Setup(w engine.World) {
 					if (x == 9 || x == 10) && ((y == 0 && cellY != 0) || (y == 14 && cellY != 4)) {
 						continue
 					}
-					if (y == 6 || y == 7) && ((x == 0 && cellX != 0) || (x == 19 && cellX != 4)) {
+					if (y == 6 || y == 7 || y == 8) && ((x == 0 && cellX != 0) || (x == 19 && cellX != 4)) {
 						continue
 					}
 
 					walls = append(walls, &entities.Placeholder{
-						Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "WALL", colornames.Gray),
+						Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "WALL", cellWallColours[cellX+cellY]),
 						Position: components.NewGridPosition(x, y, cellX, cellY),
 						Hitbox:   components.Hitbox{Width: 32, Height: 32},
 					})
