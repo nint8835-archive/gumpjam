@@ -14,6 +14,7 @@ import (
 type Debug struct {
 	*components.Camera
 	*components.Position
+	*components.Velocity
 }
 
 func (d *Debug) Update(w engine.World) {
@@ -35,10 +36,12 @@ func (d *Debug) Draw(w engine.World, screen *ebiten.Image) {
 	ebitenutil.DebugPrint(
 		screen,
 		fmt.Sprintf(
-			"CellX: %d, CellY: %d - %f FPS",
+			"CellX: %d, CellY: %d - %f FPS\nVX: %f, VY: %f",
 			d.CellX,
 			d.CellY,
 			ebiten.ActualFPS(),
+			d.Velocity.X,
+			d.Velocity.Y,
 		),
 	)
 }

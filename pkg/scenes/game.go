@@ -38,10 +38,10 @@ func (g *Game) Setup(w engine.World) {
 	w.AddSystems(
 		&systems.Player{},
 		&systems.ScreenEdgeTransition{},
+		&systems.Gravity{},
 		&systems.Velocity{},
 		&systems.Render{},
 		&systems.Debug{},
-		&systems.Gravity{},
 	)
 
 	w.AddEntities(

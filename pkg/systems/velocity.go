@@ -55,7 +55,9 @@ func (v *Velocity) Update(w engine.World) {
 		}
 	})
 
+	v.Velocity.X = futureX - v.Position.X
 	v.Position.X = futureX
+	v.Velocity.Y = futureY - v.Position.Y
 	v.Position.Y = futureY
 }
 
