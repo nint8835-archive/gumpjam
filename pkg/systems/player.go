@@ -2,6 +2,7 @@ package systems
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/sedyh/mizu/pkg/engine"
 
 	"github.com/nint8835/gumpjam/pkg/components"
@@ -13,21 +14,16 @@ type Player struct {
 }
 
 func (p *Player) Update(w engine.World) {
-	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		p.Y = -5
-	} else if ebiten.IsKeyPressed(ebiten.KeyS) {
-		p.Y = 5
-	}
-	//} else {
-	//	p.Y = 0
-	//}
-
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		p.X = -5
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) {
 		p.X = 5
 	} else {
 		p.X = 0
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeySpace) && p.Velocity.OnGround {
+		p.Velocity.Y = -13
 	}
 }
 

@@ -36,12 +36,13 @@ func (d *Debug) Draw(w engine.World, screen *ebiten.Image) {
 	ebitenutil.DebugPrint(
 		screen,
 		fmt.Sprintf(
-			"CellX: %d, CellY: %d - %f FPS\nVX: %f, VY: %f",
+			"CellX: %d, CellY: %d - %f FPS\nVX: %f, VY: %f, on ground: %t",
 			d.CellX,
 			d.CellY,
 			ebiten.ActualFPS(),
 			d.Velocity.X,
 			d.Velocity.Y,
+			d.Velocity.OnGround,
 		),
 	)
 }

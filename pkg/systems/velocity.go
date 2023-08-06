@@ -15,6 +15,8 @@ type Velocity struct {
 func (v *Velocity) Update(w engine.World) {
 	futureX, futureY := v.Position.X+v.Velocity.X, v.Position.Y+v.Velocity.Y
 
+	v.Velocity.OnGround = false
+
 	w.View(&components.Position{}, &components.Hitbox{}).Each(func(e engine.Entity) {
 		var otherEntPos *components.Position
 		var otherEntHitbox *components.Hitbox
@@ -49,6 +51,7 @@ func (v *Velocity) Update(w engine.World) {
 		) {
 			if v.Velocity.Y > 0 {
 				futureY = otherEntPos.Y - v.Hitbox.Height
+				v.Velocity.OnGround = true
 			} else {
 				futureY = otherEntPos.Y + otherEntHitbox.Height
 			}
