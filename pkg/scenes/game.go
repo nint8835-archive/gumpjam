@@ -32,6 +32,7 @@ func (g *Game) Setup(w engine.World) {
 		components.Camera{},
 		components.Velocity{},
 		components.Hitbox{},
+		components.Gravity{},
 	)
 
 	w.AddSystems(
@@ -40,6 +41,7 @@ func (g *Game) Setup(w engine.World) {
 		&systems.Velocity{},
 		&systems.Render{},
 		&systems.Debug{},
+		&systems.Gravity{},
 	)
 
 	w.AddEntities(
@@ -51,7 +53,8 @@ func (g *Game) Setup(w engine.World) {
 				CellX: 2,
 				CellY: 2,
 			},
-			Hitbox: components.Hitbox{Width: 32, Height: 32},
+			Hitbox:  components.Hitbox{Width: 32, Height: 32},
+			Gravity: components.NewGravity(),
 		},
 	)
 

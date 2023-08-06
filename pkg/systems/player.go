@@ -17,9 +17,10 @@ func (p *Player) Update(w engine.World) {
 		p.Y = -5
 	} else if ebiten.IsKeyPressed(ebiten.KeyS) {
 		p.Y = 5
-	} else {
-		p.Y = 0
 	}
+	//} else {
+	//	p.Y = 0
+	//}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		p.X = -5

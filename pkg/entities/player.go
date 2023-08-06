@@ -8,4 +8,5 @@ type Player struct {
 	components.Camera
 	components.Velocity
 	components.Hitbox
+	components.Gravity
 }
