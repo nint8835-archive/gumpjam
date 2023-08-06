@@ -32,7 +32,15 @@ func (d *Debug) Update(w engine.World) {
 }
 
 func (d *Debug) Draw(w engine.World, screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("CellX: %d, CellY: %d", d.CellX, d.CellY))
+	ebitenutil.DebugPrint(
+		screen,
+		fmt.Sprintf(
+			"CellX: %d, CellY: %d - %f FPS",
+			d.CellX,
+			d.CellY,
+			ebiten.ActualFPS(),
+		),
+	)
 }
 
 var _ engine.SystemUpdater = (*Debug)(nil)

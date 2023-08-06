@@ -7,4 +7,5 @@ type Player struct {
 	components.Position
 	components.Camera
 	components.Velocity
+	components.Hitbox
 }
