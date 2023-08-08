@@ -58,6 +58,25 @@ func (g *Game) Setup(w engine.World) {
 		},
 	)
 
+	w.AddEntities(&entities.Placeholder{
+		Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerBackground, "PLATFORM", colornames.Magenta),
+		Position: components.NewGridPosition(2, 11, 2, 2),
+		Hitbox: components.Hitbox{
+			Width:            32,
+			Height:           32,
+			AllowFallThrough: true,
+		},
+	})
+	w.AddEntities(&entities.Placeholder{
+		Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerBackground, "PLATFORM", colornames.Magenta),
+		Position: components.NewGridPosition(17, 11, 2, 2),
+		Hitbox: components.Hitbox{
+			Width:            32,
+			Height:           32,
+			AllowJumpThrough: true,
+		},
+	})
+
 	var walls []any
 	for cellX := 0; cellX < 5; cellX++ {
 		for cellY := 0; cellY < 5; cellY++ {
@@ -68,7 +87,7 @@ func (g *Game) Setup(w engine.World) {
 						continue
 					}
 					// Create gaps in the center of each side if there's an adjacent cell
-					if (x == 9 || x == 10) && ((y == 0 && cellY != 0) || (y == 14 && cellY != 4)) {
+					if ((x == 9 || x == 10) && y == 0) && ((y == 0 && cellY != 0) || (y == 14 && cellY != 4)) {
 						continue
 					}
 					if (y == 6 || y == 7 || y == 8) && ((x == 0 && cellX != 0) || (x == 19 && cellX != 4)) {
@@ -78,7 +97,11 @@ func (g *Game) Setup(w engine.World) {
 					walls = append(walls, &entities.Placeholder{
 						Sprite:   components.NewPlaceholderSprite(32, 32, components.SpriteLayerForeground, "WALL", cellWallColours[cellX+cellY]),
 						Position: components.NewGridPosition(x, y, cellX, cellY),
-						Hitbox:   components.Hitbox{Width: 32, Height: 32},
+						Hitbox: components.Hitbox{
+							Width:            32,
+							Height:           32,
+							AllowFallThrough: (x == 9 || x == 10) && cellY != 4,
+						},
 					})
 				}
 			}

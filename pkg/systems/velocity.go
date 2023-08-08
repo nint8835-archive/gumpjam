@@ -1,6 +1,7 @@
 package systems
 
 import (
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/sedyh/mizu/pkg/engine"
 
 	"github.com/nint8835/gumpjam/pkg/components"
@@ -49,10 +50,10 @@ func (v *Velocity) Update(w engine.World) {
 			otherEntPos,
 			otherEntHitbox,
 		) {
-			if v.Velocity.Y > 0 {
+			if v.Velocity.Y > 0 && !(otherEntHitbox.AllowFallThrough && ebiten.IsKeyPressed(ebiten.KeyS)) {
 				futureY = otherEntPos.Y - v.Hitbox.Height
 				v.Velocity.OnGround = true
-			} else {
+			} else if v.Velocity.Y < 0 && !(otherEntHitbox.AllowJumpThrough && ebiten.IsKeyPressed(ebiten.KeyW)) {
 				futureY = otherEntPos.Y + otherEntHitbox.Height
 			}
 		}

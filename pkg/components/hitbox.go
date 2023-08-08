@@ -3,6 +3,9 @@ package components
 type Hitbox struct {
 	Width  float64
 	Height float64
+
+	AllowJumpThrough bool
+	AllowFallThrough bool
 }
 
 func HasOverlap(aPos *Position, aHitbox *Hitbox, bPos *Position, bHitbox *Hitbox) bool {
