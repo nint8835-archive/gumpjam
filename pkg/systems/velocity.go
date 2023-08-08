@@ -36,7 +36,7 @@ func (v *Velocity) Update(w engine.World) {
 			v.Hitbox,
 			otherEntPos,
 			otherEntHitbox,
-		) {
+		) && !(v.Velocity.Y > 0 && otherEntHitbox.AllowFallThrough && ebiten.IsKeyPressed(ebiten.KeyS) || (v.Velocity.Y < 0 && otherEntHitbox.AllowJumpThrough && ebiten.IsKeyPressed(ebiten.KeyW))) {
 			if v.Velocity.X > 0 {
 				futureX = otherEntPos.X - v.Hitbox.Width
 			} else {
