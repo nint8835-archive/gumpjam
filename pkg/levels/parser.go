@@ -94,18 +94,19 @@ func loadIntGridLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldt
 func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk_parser.Level) error {
 	for _, entity := range layer.EntityInstances {
 		cellX, cellY := worldToGrid(level.WorldX, level.WorldY)
+		position := components.NewGridPosition(int(entity.Grid[0]), int(entity.Grid[1]), cellX, cellY)
 
 		switch entity.Identifier {
 		case "Player":
 			w.AddEntities(&entities.Player{
-				Position: components.NewGridPosition(int(entity.Grid[0]), int(entity.Grid[1]), cellX, cellY),
+				Position: position,
 				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "RAT", colornames.Magenta),
 				Gravity:  components.NewGravity(),
 				Hitbox:   components.Hitbox{Width: float64(entity.Width), Height: float64(entity.Height)},
 			})
 		case "Placeholder":
 			w.AddEntities(&entities.Placeholder{
-				Position: components.NewGridPosition(int(entity.Grid[0]), int(entity.Grid[1]), cellX, cellY),
+				Position: position,
 				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "TEMP", parseColourValue(getFieldInstance(entity, "Colour").Value.(string))),
 				Hitbox: components.Hitbox{
 					Width:            float64(entity.Width),
