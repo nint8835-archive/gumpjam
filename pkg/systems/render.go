@@ -46,7 +46,7 @@ func (r *Render) Draw(w engine.World, screen *ebiten.Image) {
 	for _, sprite := range visibleSprites {
 		options := &ebiten.DrawImageOptions{}
 		options.GeoM.Translate(sprite.Position.X, sprite.Position.Y)
-		screen.DrawImage(sprite.Sprite.Image, options)
+		screen.DrawImage(sprite.Sprite.Image.(*ebiten.Image), options)
 	}
 }
 

@@ -1,6 +1,7 @@
 package components
 
 import (
+	"image"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -18,7 +19,7 @@ const (
 )
 
 type Sprite struct {
-	Image *ebiten.Image
+	Image image.Image
 	Layer SpriteLayer
 }
 
