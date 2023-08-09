@@ -3,6 +3,8 @@ package levels
 import (
 	_ "embed"
 	"fmt"
+	"image/color"
+	"strconv"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/sedyh/mizu/pkg/engine"
@@ -17,8 +19,27 @@ import (
 var ldtkFile []byte
 
 func worldToGrid(x, y int64) (int, int) {
-	fmt.Println(x, y)
 	return int(x) / 640, int(y) / 480
+}
+
+func getFieldInstance(entity ldtk_parser.EntityInstance, fieldName string) ldtk_parser.FieldInstance {
+	for _, field := range entity.FieldInstances {
+		if field.Identifier == fieldName {
+			return field
+		}
+	}
+
+	return ldtk_parser.FieldInstance{}
+}
+
+func parseColourValue(hexString string) color.Color {
+	colorInt, _ := strconv.ParseInt(hexString[1:], 16, 64)
+	return color.RGBA{
+		R: uint8(colorInt >> 16),
+		G: uint8(colorInt >> 8),
+		B: uint8(colorInt),
+		A: 255,
+	}
 }
 
 func Load(w engine.World) error {
@@ -26,6 +47,8 @@ func Load(w engine.World) error {
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal ldtk file: %w", err)
 	}
+
+	spew.Dump(data)
 
 	for _, level := range data.Levels {
 		for _, layer := range level.LayerInstances {
@@ -44,8 +67,6 @@ func Load(w engine.World) error {
 		}
 	}
 
-	spew.Dump(data)
-
 	return nil
 }
 
@@ -58,7 +79,6 @@ func loadIntGridLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldt
 			}
 
 			cellX, cellY := worldToGrid(level.WorldX, level.WorldY)
-			fmt.Println(cellX, cellY)
 
 			w.AddEntities(&entities.Placeholder{
 				Position: components.NewGridPosition(int(x), int(y), cellX, cellY),
@@ -82,6 +102,17 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "RAT", colornames.Magenta),
 				Gravity:  components.NewGravity(),
 				Hitbox:   components.Hitbox{Width: float64(entity.Width), Height: float64(entity.Height)},
+			})
+		case "Placeholder":
+			w.AddEntities(&entities.Placeholder{
+				Position: components.NewGridPosition(int(entity.Grid[0]), int(entity.Grid[1]), cellX, cellY),
+				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "TEMP", parseColourValue(getFieldInstance(entity, "Colour").Value.(string))),
+				Hitbox: components.Hitbox{
+					Width:            float64(entity.Width),
+					Height:           float64(entity.Height),
+					AllowJumpThrough: getFieldInstance(entity, "AllowJumpThrough").Value.(bool),
+					AllowFallThrough: getFieldInstance(entity, "AllowFallThrough").Value.(bool),
+				},
 			})
 		default:
 			return fmt.Errorf("unknown entity type: %s", entity.Identifier)
