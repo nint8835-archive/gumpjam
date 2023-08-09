@@ -3,6 +3,7 @@ module github.com/nint8835/gumpjam
 go 1.20
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/hajimehoshi/ebiten/v2 v2.5.6
 	github.com/sedyh/mizu v1.0.4
 	golang.org/x/image v0.6.0
