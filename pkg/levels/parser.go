@@ -3,6 +3,7 @@ package levels
 import (
 	"bytes"
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"image"
 	"image/color"
@@ -50,6 +51,29 @@ func parseColourValue(hexString string) color.Color {
 	}
 }
 
+type tileData struct {
+	AllowFallThrough bool
+	AllowJumpThrough bool
+}
+
+func getTileData(file ldtk_parser.LdtkJSON, tile ldtk_parser.TileInstance) tileData {
+	for _, customData := range file.Defs.Tilesets[0].CustomData {
+		if customData.TileID != tile.T {
+			continue
+		}
+
+		var data tileData
+		err := json.Unmarshal([]byte(customData.Data), &data)
+		if err != nil {
+			panic(fmt.Errorf("failed to unmarshal tile data: %w", err))
+		}
+
+		return data
+	}
+
+	return tileData{}
+}
+
 func Load(w engine.World) error {
 	data, err := ldtk_parser.UnmarshalLdtkJSON(ldtkFile)
 	if err != nil {
@@ -70,7 +94,7 @@ func Load(w engine.World) error {
 					return fmt.Errorf("failed to load int grid layer: %w", err)
 				}
 			case ldtk_parser.Tiles:
-				if err := loadTileLayer(w, layer, level); err != nil {
+				if err := loadTileLayer(w, data, layer, level); err != nil {
 					return fmt.Errorf("failed to load tile layer: %w", err)
 				}
 			default:
@@ -103,17 +127,24 @@ func loadIntGridLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldt
 	return nil
 }
 
-func loadTileLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk_parser.Level) error {
+func loadTileLayer(w engine.World, file ldtk_parser.LdtkJSON, layer ldtk_parser.LayerInstance, level ldtk_parser.Level) error {
 	for _, tile := range layer.GridTiles {
 		cellX, cellY := worldToGrid(level.WorldX, level.WorldY)
 
-		w.AddEntities(&entities.Placeholder{
+		tileData := getTileData(file, tile)
+
+		w.AddEntities(&entities.Tile{
 			Position: components.NewGridPosition(int(tile.Px[0]/layer.GridSize), int(tile.Px[1]/layer.GridSize), cellX, cellY),
 			Sprite: components.Sprite{
 				Image: tileset.SubImage(image.Rect(int(tile.Src[0]), int(tile.Src[1]), int(tile.Src[0])+int(layer.GridSize), int(tile.Src[1])+int(layer.GridSize))),
 				Layer: components.SpriteLayerBackground,
 			},
-			Hitbox: components.Hitbox{Width: float64(layer.GridSize), Height: float64(layer.GridSize)},
+			Hitbox: components.Hitbox{
+				Width:            float64(layer.GridSize),
+				Height:           float64(layer.GridSize),
+				AllowFallThrough: tileData.AllowFallThrough,
+				AllowJumpThrough: tileData.AllowJumpThrough,
+			},
 		})
 	}
 
