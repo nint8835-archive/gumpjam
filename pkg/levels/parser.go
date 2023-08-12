@@ -18,6 +18,7 @@ import (
 	"github.com/nint8835/gumpjam/pkg/components"
 	"github.com/nint8835/gumpjam/pkg/entities"
 	"github.com/nint8835/gumpjam/pkg/levels/ldtk_parser"
+	"github.com/nint8835/gumpjam/pkg/resources/sprites"
 )
 
 //go:embed Gumpjam.ldtk
@@ -160,9 +161,12 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 		case "Player":
 			w.AddEntities(&entities.Player{
 				Position: position,
-				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "RAT", colornames.Magenta),
-				Gravity:  components.NewGravity(),
-				Hitbox:   components.Hitbox{Width: float64(entity.Width), Height: float64(entity.Height)},
+				Sprite: components.Sprite{
+					Image: sprites.Rat,
+					Layer: components.SpriteLayerForeground,
+				},
+				Gravity: components.NewGravity(),
+				Hitbox:  components.Hitbox{Width: float64(entity.Width), Height: float64(entity.Height)},
 			})
 		case "Placeholder":
 			w.AddEntities(&entities.Placeholder{

@@ -11,13 +11,16 @@ import (
 type Player struct {
 	*components.Camera
 	*components.Velocity
+	*components.Sprite
 }
 
 func (p *Player) Update(w engine.World) {
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		p.X = -5
+		p.FlipX = true
 	} else if ebiten.IsKeyPressed(ebiten.KeyD) {
 		p.X = 5
+		p.FlipX = false
 	} else {
 		p.X = 0
 	}

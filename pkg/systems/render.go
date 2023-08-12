@@ -45,6 +45,10 @@ func (r *Render) Draw(w engine.World, screen *ebiten.Image) {
 
 	for _, sprite := range visibleSprites {
 		options := &ebiten.DrawImageOptions{}
+		if sprite.Sprite.FlipX {
+			options.GeoM.Scale(-1, 1)
+			options.GeoM.Translate(float64(sprite.Image.Bounds().Dx()), 0)
+		}
 		options.GeoM.Translate(sprite.Position.X, sprite.Position.Y)
 		screen.DrawImage(sprite.Sprite.Image.(*ebiten.Image), options)
 	}

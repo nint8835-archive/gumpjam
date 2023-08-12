@@ -21,6 +21,8 @@ const (
 type Sprite struct {
 	Image image.Image
 	Layer SpriteLayer
+
+	FlipX bool
 }
 
 func NewPlaceholderSprite(width, height int, layer SpriteLayer, label string, colour color.Color) Sprite {
