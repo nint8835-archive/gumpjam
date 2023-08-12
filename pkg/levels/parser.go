@@ -45,8 +45,8 @@ func parseColourValue(hexString string) color.Color {
 }
 
 type tileData struct {
-	AllowFallThrough bool
-	AllowJumpThrough bool
+	AllowFallThrough bool `json:",omitempty"`
+	AllowJumpThrough bool `json:",omitempty"`
 }
 
 func getTileData(file ldtk_parser.LdtkJSON, tile ldtk_parser.TileInstance) tileData {
