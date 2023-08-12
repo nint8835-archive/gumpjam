@@ -305,7 +305,7 @@
 			"__cHei": 8,
 			"identifier": "Tileset",
 			"uid": 12,
-			"relPath": "sprites/Tileset.png",
+			"relPath": "../resources/sprites/tileset.png",
 			"embedAtlas": null,
 			"pxWid": 256,
 			"pxHei": 256,
@@ -355,7 +355,7 @@
 					"__pxTotalOffsetX": 0,
 					"__pxTotalOffsetY": 0,
 					"__tilesetDefUid": 12,
-					"__tilesetRelPath": "sprites/Tileset.png",
+					"__tilesetRelPath": "../resources/sprites/tileset.png",
 					"iid": "b2220d70-1460-11ee-80a1-2b7181c27407",
 					"levelId": 0,
 					"layerDefUid": 13,
@@ -507,7 +507,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "Player",
-							"__grid": [7,8],
+							"__grid": [6,8],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -516,7 +516,7 @@
 							"width": 56,
 							"height": 32,
 							"defUid": 2,
-							"px": [224,256],
+							"px": [192,256],
 							"fieldInstances": []
 						}
 					]
@@ -555,7 +555,7 @@
 					"__pxTotalOffsetX": 0,
 					"__pxTotalOffsetY": 0,
 					"__tilesetDefUid": 12,
-					"__tilesetRelPath": "sprites/Tileset.png",
+					"__tilesetRelPath": "../resources/sprites/tileset.png",
 					"iid": "b2223480-1460-11ee-80a1-6b27d63a9284",
 					"levelId": 7,
 					"layerDefUid": 13,

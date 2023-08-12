@@ -1,17 +1,13 @@
 package levels
 
 import (
-	"bytes"
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"image"
 	"image/color"
 	"strconv"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/sedyh/mizu/pkg/engine"
 	"golang.org/x/image/colornames"
 
@@ -23,10 +19,6 @@ import (
 
 //go:embed Gumpjam.ldtk
 var ldtkFile []byte
-
-//go:embed sprites/Tileset.png
-var tilesetBytes []byte
-var tileset *ebiten.Image
 
 func worldToGrid(x, y int64) (int, int) {
 	return int(x) / 640, int(y) / 480
@@ -137,7 +129,7 @@ func loadTileLayer(w engine.World, file ldtk_parser.LdtkJSON, layer ldtk_parser.
 		w.AddEntities(&entities.Tile{
 			Position: components.NewGridPosition(int(tile.Px[0]/layer.GridSize), int(tile.Px[1]/layer.GridSize), cellX, cellY),
 			Sprite: components.Sprite{
-				Image: tileset.SubImage(image.Rect(int(tile.Src[0]), int(tile.Src[1]), int(tile.Src[0])+int(layer.GridSize), int(tile.Src[1])+int(layer.GridSize))),
+				Image: sprites.GetTile(tile.Src[0], tile.Src[1]),
 				Layer: components.SpriteLayerBackground,
 			},
 			Hitbox: components.Hitbox{
@@ -171,7 +163,13 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 		case "Placeholder":
 			w.AddEntities(&entities.Placeholder{
 				Position: position,
-				Sprite:   components.NewPlaceholderSprite(int(entity.Width), int(entity.Height), components.SpriteLayerForeground, "TEMP", parseColourValue(getFieldInstance(entity, "Colour").Value.(string))),
+				Sprite: components.NewPlaceholderSprite(
+					int(entity.Width),
+					int(entity.Height),
+					components.SpriteLayerForeground,
+					"TEMP",
+					parseColourValue(getFieldInstance(entity, "Colour").Value.(string)),
+				),
 				Hitbox: components.Hitbox{
 					Width:            float64(entity.Width),
 					Height:           float64(entity.Height),
@@ -185,12 +183,4 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 	}
 
 	return nil
-}
-
-func init() {
-	var err error
-	tileset, _, err = ebitenutil.NewImageFromReader(bytes.NewReader(tilesetBytes))
-	if err != nil {
-		panic(fmt.Errorf("failed to load tileset image: %w", err))
-	}
 }
