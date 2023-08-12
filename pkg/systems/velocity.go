@@ -1,6 +1,8 @@
 package systems
 
 import (
+	"math"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/sedyh/mizu/pkg/engine"
 
@@ -59,9 +61,19 @@ func (v *Velocity) Update(w engine.World) {
 		}
 	})
 
-	v.Velocity.X = futureX - v.Position.X
+	futureXVelocity := futureX - v.Position.X
+	futureYVelocity := futureY - v.Position.Y
+
+	if math.Signbit(v.Velocity.X) != math.Signbit(futureXVelocity) {
+		futureXVelocity = 0
+	}
+	if math.Signbit(v.Velocity.Y) != math.Signbit(futureYVelocity) {
+		futureYVelocity = 0
+	}
+
+	v.Velocity.X = futureXVelocity
 	v.Position.X = futureX
-	v.Velocity.Y = futureY - v.Position.Y
+	v.Velocity.Y = futureYVelocity
 	v.Position.Y = futureY
 }
 
