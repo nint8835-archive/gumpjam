@@ -185,6 +185,14 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 					Layer: components.SpriteLayerBackground,
 				},
 			})
+		case "Safe_Indicator":
+			w.AddEntities(&entities.BackgroundImage{
+				Position: position,
+				Sprite: components.Sprite{
+					Image: sprites.GetTile(256-32, 256-32),
+					Layer: components.SpriteLayerBackground,
+				},
+			})
 		default:
 			return fmt.Errorf("unknown entity type: %s", entity.Identifier)
 		}
