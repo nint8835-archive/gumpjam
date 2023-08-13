@@ -177,6 +177,14 @@ func loadEntityLayer(w engine.World, layer ldtk_parser.LayerInstance, level ldtk
 					AllowFallThrough: getFieldInstance(entity, "AllowFallThrough").Value.(bool),
 				},
 			})
+		case "Success":
+			w.AddEntities(&entities.BackgroundImage{
+				Position: position,
+				Sprite: components.Sprite{
+					Image: sprites.Success,
+					Layer: components.SpriteLayerBackground,
+				},
+			})
 		default:
 			return fmt.Errorf("unknown entity type: %s", entity.Identifier)
 		}

@@ -25,6 +25,11 @@ func (v *Velocity) Update(w engine.World) {
 		var otherEntHitbox *components.Hitbox
 		e.Get(&otherEntPos, &otherEntHitbox)
 
+		// TODO: I have no clue why this is necessary, but it is.
+		if otherEntPos == nil || otherEntHitbox == nil {
+			return
+		}
+
 		if otherEntPos == v.Position {
 			return
 		}

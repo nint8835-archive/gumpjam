@@ -14,6 +14,10 @@ import (
 var ratBytes []byte
 var Rat *ebiten.Image
 
+//go:embed success.png
+var successBytes []byte
+var Success *ebiten.Image
+
 //go:embed tileset.png
 var tilesetBytes []byte
 var Tileset *ebiten.Image
@@ -27,6 +31,11 @@ func init() {
 	Rat, _, err = ebitenutil.NewImageFromReader(bytes.NewReader(ratBytes))
 	if err != nil {
 		panic(fmt.Errorf("failed to load rat image: %w", err))
+	}
+
+	Success, _, err = ebitenutil.NewImageFromReader(bytes.NewReader(successBytes))
+	if err != nil {
+		panic(fmt.Errorf("failed to load success image: %w", err))
 	}
 
 	Tileset, _, err = ebitenutil.NewImageFromReader(bytes.NewReader(tilesetBytes))
